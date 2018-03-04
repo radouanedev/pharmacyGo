@@ -65,6 +65,8 @@ public class MapsActivity extends AppCompatActivity implements
     private FrameLayout mFrameMap;
     private ProgressBar mLoadingProgress;
 
+    private Geofencing mGeofencing;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,9 @@ public class MapsActivity extends AppCompatActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        mGeofencing = new Geofencing(this, mGoogleApiClient);
     }
 
 
