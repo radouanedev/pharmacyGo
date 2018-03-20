@@ -117,7 +117,6 @@ public class MapsActivity extends AppCompatActivity implements
 
     /*****  Google Api Client Configuration *****/
     private void googleApiClientConfig() {
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
@@ -126,7 +125,6 @@ public class MapsActivity extends AppCompatActivity implements
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
-
     }
 
     /***** BEGIN Listening to Connection *****/
@@ -137,6 +135,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        mGeofencing.registerAllGeofences();
     }
 
     @Override
@@ -183,8 +182,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     private void checkLocationPermission() {
 
-        if (
-                ContextCompat.checkSelfPermission(this.getApplicationContext(),
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED
                         &&
@@ -207,7 +205,7 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
 
-    private void getDevicePlace() {
+    private void setDevicePlace() {
 
         //////// GET PLACE BY ID /////////
         Places.GeoDataApi.getPlaceById(mGoogleApiClient,
@@ -298,7 +296,8 @@ public class MapsActivity extends AppCompatActivity implements
         if(pharmacies!=null && !pharmacies.isEmpty()) {
             mPharmacies.addAll(pharmacies);
             showMap();
-            getDevicePlace();
+            mGeofencing.updateGeofencesList(mPharmacies);
+            setDevicePlace();
         }
     }
 
